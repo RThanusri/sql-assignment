@@ -1,0 +1,254 @@
+Tasks 1: Database Design:
+1. Create the database named "HMBank"
+	
+2. Define the schema for the Customers, Accounts, and Transactions tables based on the
+provided schema.
+
+
+5. Create appropriate Primary Key and Foreign Key constraints for referential integrity.
+
+
+6. Write SQL scripts to create the mentioned tables with appropriate data types, constraints,
+and relationships.
+• Customers
+• Accounts
+• Transactions
+
+
+         create database HMBank;
+	 use HMBank;
+
+  Customers:
+
+	create table customers ( customer_id int primary key , first_name varchar(20), last_name varchar(20) , DOB date , email varchar(20),phone_number int , address varchar (200));
+
+  Accounts:
+
+	create table accounts ( account_id int primary key , customer_id int,account_type varchar(20), balance decimal(10,2 ) , foreign key(customer_id) references customers(customer_id));
+
+ Transactions:
+
+	create table transactions ( transaction_id int primary key ,account_id int ,transaction_type varchar(20), amount decimal(10,2 ), transaction_date date , foreign key(account_id) references accounts(account_id));
+
+
+4. Create an ERD (Entity Relationship Diagram) for the database.
+
+  	Attached as image
+
+Tasks 2: Select, Where, Between, AND, LIKE:
+1. Insert at least 10 sample records into each of the following tables.
+• Customers
+• Accounts
+• Transactions
+
+INSERT INTO customers (customer_id, first_name, last_name, dob, email, phone_number, address)
+VALUES 
+(1, 'John', 'Doe', '1990-05-15', 'john.doe@email.com', 1234567890, '123 Main St, Anytown, USA'),
+(2, 'Jane', 'Smith', '1985-10-20', 'jane.smith@email.com', 9876543210, '456 Elm St, Othertown, USA'),
+(3, 'Michael', 'Johnson', '1978-03-08', 'michael@email.com', 5555555555, '789 Oak St, Anycity, USA'),
+(4, 'Sarah', 'Williams', '1992-12-25', 'sarah@email.com', 1112223333, '321 Maple St, Somewhere, USA'),
+(5, 'Emily', 'Jones', '1987-07-10', 'emily.jones@email.com', 5551234567, '789 Pine St, Anytown, USA'),
+(6, 'James', 'Brown', '1980-09-03', 'james.brown@email.com', 3334445555, '456 Oak St, Othertown, USA'),
+(7, 'Linda', 'Davis', '1975-01-12', 'linda.davis@email.com', 7778889999, '123 Cedar St, Anycity, USA'),
+(8, 'David', 'Miller', '1983-06-30', 'david.miller@email.com', 2223334444, '987 Walnut St, Somewhere, USA'),
+(9, 'Jennifer', 'Wilson', '1994-04-18', 'jennifer@email.com', 4445556666, '654 Birch St, Anywhere, USA'),
+(10, 'Robert', 'Martinez', '1989-11-05', 'robert@email.com', 6667778888, '321 Elm St, Nowhere, USA');
+
+
+
+
+INSERT INTO accounts (account_id, customer_id, account_type, balance)
+VALUES
+(1001, 1, 'Savings', 500.00),
+(1002, 1, 'Checking', 1500.00),
+(1003, 2, 'Savings', 1000.00),
+(1004, 3, 'Checking', 200.00),
+(1005, 4, 'Savings', 750.00),
+(1006, 5, 'Checking', 2500.00),
+(1007, 6, 'Savings', 3000.00),
+(1008, 7, 'Checking', 750.00),
+(1009, 8, 'Savings', 500.00),
+(1010, 9, 'Checking', 1000.00);
+
+
+INSERT INTO transactions (transaction_id, account_id, transaction_type, amount, transaction_date)
+VALUES
+(5001, 1001, 'Deposit', 200.00, '2024-04-01 08:00:00'),
+(5002, 1002, 'Withdrawal', 50.00, '2024-04-02 10:15:00'),
+(5003, 1003, 'Deposit', 300.00, '2024-04-03 12:30:00'),
+(5004, 1004, 'Withdrawal', 20.00, '2024-04-04 14:45:00'),
+(5005, 1005, 'Deposit', 100.00, '2024-04-05 16:00:00'),
+(5006, 1006, 'Deposit', 500.00, '2024-04-06 09:00:00'),
+(5007, 1007, 'Withdrawal', 200.00, '2024-04-07 10:15:00'),
+(5008, 1008, 'Deposit', 100.00, '2024-04-08 12:30:00'),
+(5009, 1009, 'Withdrawal', 50.00, '2024-04-09 14:45:00'),
+(5010, 1010, 'Deposit', 300.00, '2024-04-10 16:00:00');
+
+
+2. Write SQL queries for the following tasks:
+1. Write a SQL query to retrieve the name, account type and email of all customers.
+
+	 select c.first_name , c.last_name ,a. account_type,c.email from customers c , accounts a where c.customer_id=a.customer_id;
+
+2. Write a SQL query to list all transaction corresponding customer.
+
+	select c.customer_id, c.first_name, c.last_name,  t.transaction_id, t.transaction_type, t.amount, t.transaction_datefrom customers c join accounts a on c.customer_id = a.customer_id join transactions t on a.account_id = t.account_id;
+
+	
+3. Write a SQL query to increase the balance of a specific account by a certain amount.
+
+	update  accounts set balance= balance + balance * 0.1 where account_type ="Savings";
+
+
+4. Write a SQL query to Combine first and last names of customers as a full_name.
+
+	select concat (first_name ,' ', last_name)as full_name from customers;
+
+	
+5. Write a SQL query to remove accounts with a balance of zero where the account
+type is savings.
+
+	delete from accounts where balance= 0 and account_type ="Savings";
+	
+6. Write a SQL query to Find customers living in a specific city.
+
+	select * from customers where address like '%USA%';
+
+7. Write a SQL query to Get the account balance for a specific account.
+
+	select balance from accounts where account_type="Savings";
+
+
+8. Write a SQL query to List all current accounts with a balance greater than $1,000.
+
+	 select * from accounts where  account_type = "Current " and balance > 1000;
+
+9. Write a SQL query to Retrieve all transactions for a specific account.
+
+	 select* from transactions where account_id=1001;
+
+10. Write a SQL query to Calculate the interest accrued on savings accounts based on a
+given interest rate.
+
+	select  account_id, balance * 0.05 as interest_accrued from accounts where account_type = 'savings';
+
+11. Write a SQL query to Identify accounts where the balance is less than a specified
+overdraft limit.
+
+	select * from accounts where balance< 1000;
+
+12. Write a SQL query to Find customers not living in a specific city.
+
+	 select * from customers where address not like "%USA%";
+
+
+Tasks 3: Aggregate functions, Having, Order By, GroupBy and Joins: 
+
+
+1. Write a SQL query to Find the average account balance for all customers.   
+
+	select avg(balance) from accounts where customer_id in (select customer_id from customers);
+	
+
+2. Write a SQL query to Retrieve the top 10 highest account balances.  
+
+	select account_id, balance from accounts order by balance desc limit 10;
+
+3. Write a SQL query to Calculate Total Deposits for All Customers in specific date. 
+
+	select sum(amount) from transactions where transaction_type ="Deposit" and transaction_date = '2024-04-01';
+
+
+4. Write a SQL query to Find the Oldest and Newest Customers. 
+
+	select min(dob) as newest_customer , max (dob) as oldest_customer from customers;
+
+
+5. Write a SQL query to Retrieve transaction details along with the account type. 
+
+	 select t.account_id, t.transaction_id,t.transaction_type,t.amount ,t.transaction_date , a.account_type from transactions t , accounts a where t.account_id= a.account_id;
+
+6. Write a SQL query to Get a list of customers along with their account details. 
+
+	select c.customer_id, c.first_name, c.last_name, c.dob, c.email, c.phone_number, c.address, a.account_id, a.account_type, a.balance from customers c join accounts a on c.customer_id = a.customer_id;
+
+7. Write a SQL query to Retrieve transaction details along with customer information for a 
+specific account. 
+	
+	SELECT     c.customer_id,     c.first_name,     c.last_name,     c.DOB,     c.email,     c.phone_number,     c.address,   t.transaction_id,  t.account_id,     t.transaction_type,t.amount ,t.transaction_date FROM     Customers c join Accounts a on c.customer_id = a.customer_id join transactions t on a.account_id=t.account_id where account_type= "Savings";
+
+8. Write a SQL query to Identify customers who have more than one account. 
+
+	select customer_id from accounts group by customer_id having count(*)>1;
+
+9. Write a SQL query to Calculate the difference in transaction amounts between deposits and 
+withdrawals. 
+	
+	select sum(case when transaction_type = 'deposit' then amount else -amount end) as net_transaction_amount from transactions;
+
+10. 0. Write a SQL query to Calculate the average daily balance for each account over a specified 
+period. 
+	select account_id, avg(balance)  from accounts where account_id in ( select distinct account_id from transactions where transaction_date between '2024-04-01' and '2024-04-04'
+    ) group by account_id;
+
+11. Calculate the total balance for each account type. 
+
+	select account_type , sum(balance) from accounts group by account_type;
+
+12. Identify accounts with the highest number of transactions order by descending order. 
+
+	select account_id , count(*) as numberoftransactions from transactions group by transaction_id order by numberoftransactions desc;
+
+13. List customers with high aggregate account balances, along with their account types. 
+
+	select c.first_name ,c.last_name , a.account_type,  sum(a.balance)as aggregate_balance from customers c , accounts a where c.customer_id=a.customer_id group by c.first_name ,c.last_name , a.account_type order by aggregate_balance desc;
+
+14. Identify and list duplicate transactions based on transaction amount, date, and account.
+
+	select transaction_id, account_id, transaction_type, amount, transaction_date, count(*) as duplicate_count from  transactions group by  transaction_id, account_id transaction_type amount, transaction_date having  count(*) > 1 order by transaction_date;
+
+
+
+Tasks 4: Subquery and its type: 
+1. Retrieve the customer(s) with the highest account balance. 
+
+	select  customer_id ,first_name ,last_name from customers where customer_id in(select customer_id from accounts where balance=(select max(balance) from accounts));
+
+
+2. Calculate the average account balance for customers who have more than one account. 
+	
+	select avg(balance) ,customer_id from accounts where customer_id in(select customer_id from accounts group by customer_id having count(account_id)>1) group by customer_id;
+
+
+3. Retrieve accounts with transactions whose amounts exceed the average transaction amount. 
+
+	select a.account_id, t.transaction_id from accounts a,transactions t where a.account_id=t.account_id and t.amount >(select avg(amount) from transactions);
+
+4. Identify customers who have no recorded transactions. 
+
+	select customer_id from accounts where account_id not in( select account_id from transactions );
+
+
+5. Calculate the total balance of accounts with no recorded transactions. 
+
+	select customer_id,sum(balance) from accounts where account_id not in( select account_id from transactions )group by customer_id;
+
+6. Retrieve transactions for accounts with the lowest balance. 
+
+	select account_id, transaction_id,amount,transaction_date,transaction_type from transactions where account_id =(select account_id from accounts where balance=(select min(balance) from accounts));
+	
+7. Identify customers who have accounts of multiple types. 
+
+	select customer_id,first_name,last_name from customers where customer_id in (select customer_id from accounts group by customer_id having count(distinct account_type)>1);
+
+8. Calculate the percentage of each account type out of the total number of accounts. 
+
+	select account_type, count(*) as number_of_accounts, (count(*) / (select count(*) from accounts)) * 100 as percentage from  accounts group by   account_type;
+
+9. Retrieve all transactions for a customer with a given customer_id. 
+
+	select transaction_id,transaction_type,amount,transaction_date from transactions where account_id in(select account_id from accounts where customer_id= 1);
+
+10. Calculate the total balance for each account type, including a subquery within the SELECT clause.
+
+	select  account_type, (select sum(balance) from accounts where account_type = a.account_type) as total_balance from  accounts a  group by  account_type;
